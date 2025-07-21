@@ -37,7 +37,8 @@ y5_a2,Year 5 height (cm),
 y5_a1,Year 5 weight (kg),
 y1_a2,Year 1 height (cm),
 y1_a1,Year 1 weight (kg),
-sex,Sex assigned at birth,"1 - Male 2 - Female
+sex,Sex assigned at birth,"1 – Male
+2 - Female
 "
 y1_agemos,The age when the year 1 anthropometric measurements were taken (month),
 y5_agemos,The age when the year 5 anthropometric measurements were taken (month),

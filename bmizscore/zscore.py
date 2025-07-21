@@ -182,10 +182,10 @@ def get_bmiz(mydata_row, ref=ref):
 
 def get_bmiz_singlevalue(agemos,sex_m1f2,height_cm, weight_kg,ref=ref):
     # Set lengths for agemos and sex columns
-    agemos = agemos.astype(float)
-    sex = sex_m1f2.astype(int)
-    height = height_cm.astype(float)
-    weight = weight_kg.astype(float)
+    agemos = float(agemos)
+    sex = int(sex_m1f2)
+    height = float(height_cm)
+    weight = float(weight_kg)
     bmi = weight / (height / 100) ** 2
     # headcir = mydata_row["headcir"].astype(float) if mydata_row["headcir"] else None
 
