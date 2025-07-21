@@ -51,6 +51,7 @@ mode_variables = {
     "good": [
         'occupcode_m_0',
         'hhincome_0',
+        'y1_bmifa',
         'y5_a5',
         'y5_a6',
         'y5_a7',
@@ -245,6 +246,10 @@ async def predict_batch(mode: str = Form(...), file: UploadFile = File(...)):
         if len(content) == 0:
             raise HTTPException(status_code=400, detail="Empty file uploaded")
         
+        # Read the original file to get the original columns
+        original_df = pd.read_csv(io.BytesIO(content))
+        original_columns = original_df.columns.tolist()
+        
         # Process the data
         try:
             result_df = process_batch(io.BytesIO(content), mode)
@@ -263,9 +268,13 @@ async def predict_batch(mode: str = Form(...), file: UploadFile = File(...)):
                 detail=f"Missing required columns in CSV: {', '.join(missing_cols)}"
             )
         
+        # Create a new DataFrame with only the original columns plus y8_bmi
+        final_df = original_df.copy()
+        final_df['y8_bmi'] = result_df['y8_bmi']
+        
         # Convert the result to CSV
         output = io.StringIO()
-        result_df.to_csv(output, index=False)
+        final_df.to_csv(output, index=False)
         
         return StreamingResponse(
             io.StringIO(output.getvalue()),
@@ -284,9 +293,51 @@ async def predict_batch(mode: str = Form(...), file: UploadFile = File(...)):
 if __name__ == "__main__":
     import uvicorn
     import os
+    import socket
+    import argparse
+    import sys
     
-    # Get port from environment variable or use default (8080)
-    port = int(os.environ.get("PORT", 8080))
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description="Run the BMI Year 8 Prediction Tool server")
+    parser.add_argument("--port", type=int, help="Port to run the server on (default: 8080 or PORT env var)")
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to (default: 0.0.0.0)")
+    parser.add_argument("--auto-port", action="store_true", help="Automatically find an available port if the specified port is in use")
+    args = parser.parse_args()
     
-    # Run the server with the configured port
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    # Get port from command line args, environment variable, or use default (8080)
+    port = args.port if args.port is not None else int(os.environ.get("PORT", 8080))
+    host = args.host
+    
+    # Function to check if a port is available
+    def is_port_available(host, port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind((host, port))
+                return True
+            except socket.error:
+                return False
+    
+    # Try to find an available port if auto-port is enabled
+    if args.auto_port and not is_port_available(host, port):
+        print(f"Port {port} is already in use. Searching for an available port...")
+        for test_port in range(port + 1, port + 100):
+            if is_port_available(host, test_port):
+                print(f"Found available port: {test_port}")
+                port = test_port
+                break
+        else:
+            print(f"Error: Could not find an available port in range {port+1}-{port+100}")
+            sys.exit(1)
+    
+    try:
+        # Run the server with the configured port
+        print(f"Starting server on {host}:{port}")
+        uvicorn.run(app, host=host, port=port)
+    except OSError as e:
+        if "address already in use" in str(e).lower():
+            print(f"Error: Port {port} is already in use. Try using a different port with --port or enable --auto-port to automatically find an available port.")
+            print(f"Example: python main.py --port 8081")
+            print(f"Example: python main.py --auto-port")
+        else:
+            print(f"Error starting server: {e}")
+        sys.exit(1)

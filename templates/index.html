@@ -5,106 +5,461 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Year 8 BMI Prediction Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #2ecc71;
+            --secondary-dark: #27ae60;
+            --accent-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+        }
+        
         body {
             padding-top: 2rem;
             padding-bottom: 2rem;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        .app-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .app-subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-top-left-radius: 0.5rem !important;
+            border-top-right-radius: 0.5rem !important;
+            border-bottom: none;
+            padding: 1rem 1.25rem;
+        }
+        
+        .card-title {
+            margin-bottom: 0;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
         .form-section {
             display: none;
         }
+        
         .active {
             display: block;
         }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ced4da;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn {
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-success:hover, .btn-success:focus {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary:focus {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .nav-tabs {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-tabs .nav-link {
+            margin-bottom: -1px;
+            border: 1px solid transparent;
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 0.75rem 1.25rem;
+            transition: all 0.2s;
+        }
+        
+        .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+            border-color: #e9ecef #e9ecef #dee2e6;
+            color: var(--primary-color);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+            font-weight: 600;
+        }
+        
         .loading {
             display: none;
             text-align: center;
-            margin-top: 20px;
+            margin: 2rem 0;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
+        
+        .loading .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .loading p {
+            margin-top: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
         .result {
             display: none;
-            margin-top: 20px;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result h4 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .result p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .result strong {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .alert {
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .form-group-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .form-section-title {
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .mode-card {
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .mode-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .mode-card .card-body {
+            padding: 1.25rem;
+        }
+        
+        .mode-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .mode-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mode-description {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+        
+        .file-upload-container {
+            border: 2px dashed #ced4da;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-upload-container:hover, .file-upload-container.dragover {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .file-upload-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-text {
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-btn {
+            display: inline-block;
+        }
+        
+        .file-name {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header {
+                padding: 1.5rem 0;
+            }
+            
+            .card-body {
+                padding: 1.25rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Year 8 BMI Prediction Tool</h1>
+        <header class="app-header text-center">
+            <h1 class="app-title">Year 8 BMI Prediction Tool</h1>
+            <p class="app-subtitle mb-0">Predict BMI using explainable AI</p>
+        </header>
         
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2 class="card-title h5 mb-0">Select Prediction Mode</h2>
-            </div>
-            <div class="card-body">
-                <p>Choose between two prediction modes:</p>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="mode" id="modeGood" value="good" checked>
-                    <label class="form-check-label" for="modeGood">
-                        <strong>Good</strong> - Uses 10 variables for prediction
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="mode" id="modeBetter" value="better">
-                    <label class="form-check-label" for="modeBetter">
-                        <strong>Better</strong> - Uses 20 variables for more accurate prediction
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2 class="card-title h5 mb-0">Choose Prediction Method</h2>
-            </div>
-            <div class="card-body">
-                <ul class="nav nav-tabs" id="predictionTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single" type="button" role="tab" aria-controls="single" aria-selected="true">Single Sample</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="batch-tab" data-bs-toggle="tab" data-bs-target="#batch" type="button" role="tab" aria-controls="batch" aria-selected="false">Batch Processing</button>
-                    </li>
-                </ul>
-                
-                <div class="tab-content mt-3" id="predictionTabsContent">
-                    <!-- Single Sample Tab -->
-                    <div class="tab-pane fade show active" id="single" role="tabpanel" aria-labelledby="single-tab">
-                        <div id="variablesContainer">
-                            <!-- Variables will be dynamically loaded here -->
-                            <div class="text-center my-4">
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h2 class="card-title">Select Prediction Mode</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="card mode-card selected" id="goodModeCard">
+                                    <div class="card-body text-center">
+                                        <div class="mode-icon">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <h3 class="mode-title">Good Mode</h3>
+                                        <p class="mode-description">Uses 10 variables for prediction</p>
+                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeGood" value="good" checked>
+                                    </div>
                                 </div>
-                                <p>Loading variables...</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mode-card" id="betterModeCard">
+                                    <div class="card-body text-center">
+                                        <div class="mode-icon">
+                                            <i class="fas fa-chart-bar"></i>
+                                        </div>
+                                        <h3 class="mode-title">Better Mode</h3>
+                                        <p class="mode-description">Uses 20 variables for more accurate prediction</p>
+                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeBetter" value="better">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
-                        <button type="button" id="predictSingleBtn" class="btn btn-primary mt-3">Predict BMI</button>
-                        
-                        <div id="singleResult" class="result alert alert-success">
-                            <h4>Prediction Result</h4>
-                            <p>Predicted Year 8 BMI: <strong id="bmiResult"></strong></p>
-                        </div>
                     </div>
-                    
-                    <!-- Batch Processing Tab -->
-                    <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
-                        <div class="mb-3">
-                            <p>Download a template CSV file with the required variables for your selected mode:</p>
-                            <button type="button" id="downloadTemplateBtn" class="btn btn-outline-primary">Download Template CSV</button>
-                        </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Prediction Method</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="predictionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single" type="button" role="tab" aria-controls="single" aria-selected="true">
+                                    <i class="fas fa-user me-2"></i>Single Sample
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="batch-tab" data-bs-toggle="tab" data-bs-target="#batch" type="button" role="tab" aria-controls="batch" aria-selected="false">
+                                    <i class="fas fa-users me-2"></i>Batch Processing
+                                </button>
+                            </li>
+                        </ul>
                         
-                        <div class="mb-3">
-                            <label for="csvFile" class="form-label">Upload your CSV file:</label>
-                            <input class="form-control" type="file" id="csvFile" accept=".csv">
-                        </div>
-                        
-                        <button type="button" id="predictBatchBtn" class="btn btn-primary">Process Batch</button>
-                        
-                        <div id="batchResult" class="result alert alert-success">
-                            <h4>Batch Processing Complete</h4>
-                            <p>Your file has been processed successfully.</p>
-                            <a id="downloadResultBtn" href="#" class="btn btn-success">Download Results</a>
+                        <div class="tab-content" id="predictionTabsContent">
+                            <!-- Single Sample Tab -->
+                            <div class="tab-pane fade show active" id="single" role="tabpanel" aria-labelledby="single-tab">
+                                <div id="variablesContainer" class="mt-4">
+                                    <!-- Variables will be dynamically loaded here -->
+                                    <div class="text-center my-4">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p>Loading variables...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <button type="button" id="predictSingleBtn" class="btn btn-primary">
+                                        <i class="fas fa-calculator me-2"></i>Predict BMI
+                                    </button>
+                                </div>
+                                
+                                <div id="singleResult" class="result alert alert-success">
+                                    <h4><i class="fas fa-check-circle me-2"></i>Prediction Result</h4>
+                                    <p>Predicted Year 8 BMI: <strong id="bmiResult"></strong></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Batch Processing Tab -->
+                            <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
+                                <div class="mt-4 mb-4">
+                                    <p>Download a template CSV file with the required variables for your selected mode:</p>
+                                    <button type="button" id="downloadTemplateBtn" class="btn btn-outline-primary">
+                                        <i class="fas fa-download me-2"></i>Download Template CSV
+                                    </button>
+                                </div>
+                                
+                                <div class="file-upload-container" id="dropZone">
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-file-csv"></i>
+                                    </div>
+                                    <p class="file-upload-text">Drag and drop your CSV file here or click to browse</p>
+                                    <div class="file-upload-btn">
+                                        <label for="csvFile" class="btn btn-outline-primary">
+                                            <i class="fas fa-folder-open me-2"></i>Browse Files
+                                        </label>
+                                        <input class="d-none" type="file" id="csvFile" accept=".csv">
+                                    </div>
+                                    <p class="file-name" id="fileName"></p>
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="button" id="predictBatchBtn" class="btn btn-primary">
+                                        <i class="fas fa-cogs me-2"></i>Process Batch
+                                    </button>
+                                </div>
+                                
+                                <div id="batchResult" class="result alert alert-success">
+                                    <h4><i class="fas fa-check-circle me-2"></i>Batch Processing Complete</h4>
+                                    <p>Your file has been processed successfully.</p>
+                                    <a id="downloadResultBtn" href="#" class="btn btn-success">
+                                        <i class="fas fa-download me-2"></i>Download Results
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,18 +472,26 @@
             </div>
             <p>Processing your request...</p>
         </div>
+        
+        <footer>
+            <p>Year 8 BMI Prediction Tool &copy; 2025</p>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Elements
+            const goodModeCard = document.getElementById('goodModeCard');
+            const betterModeCard = document.getElementById('betterModeCard');
             const modeRadios = document.querySelectorAll('input[name="mode"]');
             const variablesContainer = document.getElementById('variablesContainer');
             const predictSingleBtn = document.getElementById('predictSingleBtn');
             const predictBatchBtn = document.getElementById('predictBatchBtn');
             const downloadTemplateBtn = document.getElementById('downloadTemplateBtn');
             const csvFileInput = document.getElementById('csvFile');
+            const dropZone = document.getElementById('dropZone');
+            const fileName = document.getElementById('fileName');
             const singleResult = document.getElementById('singleResult');
             const batchResult = document.getElementById('batchResult');
             const bmiResult = document.getElementById('bmiResult');
@@ -137,6 +500,31 @@
             
             // Current mode
             let currentMode = 'good';
+            
+            // Mode card selection
+            goodModeCard.addEventListener('click', function() {
+                document.getElementById('modeGood').checked = true;
+                goodModeCard.classList.add('selected');
+                betterModeCard.classList.remove('selected');
+                currentMode = 'good';
+                loadVariables(currentMode);
+                
+                // Hide results
+                singleResult.style.display = 'none';
+                batchResult.style.display = 'none';
+            });
+            
+            betterModeCard.addEventListener('click', function() {
+                document.getElementById('modeBetter').checked = true;
+                betterModeCard.classList.add('selected');
+                goodModeCard.classList.remove('selected');
+                currentMode = 'better';
+                loadVariables(currentMode);
+                
+                // Hide results
+                singleResult.style.display = 'none';
+                batchResult.style.display = 'none';
+            });
             
             // Load variables for the selected mode
             async function loadVariables(mode) {
@@ -153,35 +541,46 @@
                     const response = await fetch(`/api/variables/${mode}`);
                     const data = await response.json();
                     
-                    let html = '<form id="singleForm">';
+                    let html = '<form id="singleForm" class="form-group-container">';
+                    
+                    // Group variables by category
+                    const generalVars = [];
+                    const y1Vars = [];
+                    const y5Vars = [];
                     
                     data.variables.forEach(variable => {
-                        html += `
-                            <div class="mb-3">
-                                <label for="${variable.name}" class="form-label">
-                                    ${variable.description}
-                                </label>
-                        `;
-                        
-                        if (variable.values) {
-                            // Dropdown for categorical variables
-                            html += `
-                                <select class="form-select" id="${variable.name}" name="${variable.name}" required>
-                                    <option value="" selected disabled>Select a value</option>
-                            `;
-                            
-                            variable.values.forEach(value => {
-                                html += `<option value="${value.split(' - ')[0].trim()}">${value}</option>`;
-                            });
-                            
-                            html += `</select>`;
+                        if (variable.name.startsWith('y1_')) {
+                            y1Vars.push(variable);
+                        } else if (variable.name.startsWith('y5_')) {
+                            y5Vars.push(variable);
                         } else {
-                            // Input field for continuous variables
-                            html += `<input type="number" step="any" class="form-control" id="${variable.name}" name="${variable.name}" required>`;
+                            generalVars.push(variable);
                         }
-                        
-                        html += `</div>`;
                     });
+                    
+                    // Add general variables
+                    if (generalVars.length > 0) {
+                        html += '<h3 class="form-section-title">General Information</h3>';
+                        generalVars.forEach(variable => {
+                            html += createFormField(variable);
+                        });
+                    }
+                    
+                    // Add Year 1 variables
+                    if (y1Vars.length > 0) {
+                        html += '<h3 class="form-section-title">Year 1 Measurements</h3>';
+                        y1Vars.forEach(variable => {
+                            html += createFormField(variable);
+                        });
+                    }
+                    
+                    // Add Year 5 variables
+                    if (y5Vars.length > 0) {
+                        html += '<h3 class="form-section-title">Year 5 Measurements</h3>';
+                        y5Vars.forEach(variable => {
+                            html += createFormField(variable);
+                        });
+                    }
                     
                     html += '</form>';
                     variablesContainer.innerHTML = html;
@@ -189,23 +588,91 @@
                     console.error('Error loading variables:', error);
                     variablesContainer.innerHTML = `
                         <div class="alert alert-danger">
-                            Error loading variables. Please try again.
+                            <i class="fas fa-exclamation-circle me-2"></i>Error loading variables. Please try again.
                         </div>
                     `;
                 }
             }
             
-            // Handle mode change
-            modeRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    currentMode = this.value;
-                    loadVariables(currentMode);
+            // Create form field HTML
+            function createFormField(variable) {
+                let html = `
+                    <div class="mb-3">
+                        <label for="${variable.name}" class="form-label">
+                            ${variable.description}
+                        </label>
+                `;
+                
+                if (variable.values) {
+                    // Dropdown for categorical variables
+                    html += `
+                        <select class="form-select" id="${variable.name}" name="${variable.name}" required>
+                            <option value="" selected disabled>Select a value</option>
+                    `;
                     
-                    // Hide results
-                    singleResult.style.display = 'none';
-                    batchResult.style.display = 'none';
-                });
+                    variable.values.forEach(value => {
+                        html += `<option value="${value.split(' - ')[0].trim()}">${value}</option>`;
+                    });
+                    
+                    html += `</select>`;
+                } else {
+                    // Input field for continuous variables
+                    html += `<input type="number" step="any" class="form-control" id="${variable.name}" name="${variable.name}" required>`;
+                }
+                
+                html += `</div>`;
+                return html;
+            }
+            
+            // File upload handling
+            csvFileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileName.textContent = this.files[0].name;
+                    dropZone.classList.add('border-primary');
+                } else {
+                    fileName.textContent = '';
+                    dropZone.classList.remove('border-primary');
+                }
             });
+            
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropZone.classList.add('dragover');
+            }
+            
+            function unhighlight() {
+                dropZone.classList.remove('dragover');
+            }
+            
+            dropZone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0 && files[0].type === 'text/csv') {
+                    csvFileInput.files = files;
+                    fileName.textContent = files[0].name;
+                    dropZone.classList.add('border-primary');
+                }
+            }
             
             // Predict single sample
             predictSingleBtn.addEventListener('click', async function() {
@@ -228,7 +695,7 @@
                 });
                 
                 if (!isValid) {
-                    alert('Please fill in all required fields.');
+                    showError('single', 'Please fill in all required fields.');
                     return;
                 }
                 
@@ -255,23 +722,12 @@
                     // Display result
                     bmiResult.textContent = result.y8_bmi.toFixed(2);
                     singleResult.style.display = 'block';
+                    
+                    // Scroll to result
+                    singleResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } catch (error) {
                     console.error('Error predicting BMI:', error);
-                    
-                    // Create or update error alert
-                    let errorAlert = document.getElementById('errorAlert');
-                    if (!errorAlert) {
-                        errorAlert = document.createElement('div');
-                        errorAlert.id = 'errorAlert';
-                        errorAlert.className = 'alert alert-danger mt-3';
-                        document.getElementById('single').appendChild(errorAlert);
-                    }
-                    
-                    errorAlert.innerHTML = `
-                        <h4>Error</h4>
-                        <p>${error.message}</p>
-                    `;
-                    errorAlert.style.display = 'block';
+                    showError('single', error.message);
                 } finally {
                     loading.style.display = 'none';
                 }
@@ -308,21 +764,7 @@
                     window.URL.revokeObjectURL(url);
                 } catch (error) {
                     console.error('Error downloading template:', error);
-                    
-                    // Create or update error alert
-                    let templateErrorAlert = document.getElementById('templateErrorAlert');
-                    if (!templateErrorAlert) {
-                        templateErrorAlert = document.createElement('div');
-                        templateErrorAlert.id = 'templateErrorAlert';
-                        templateErrorAlert.className = 'alert alert-danger mt-3';
-                        document.getElementById('batch').insertBefore(templateErrorAlert, document.querySelector('#batch .mb-3:nth-child(2)'));
-                    }
-                    
-                    templateErrorAlert.innerHTML = `
-                        <h4>Error</h4>
-                        <p>${error.message}</p>
-                    `;
-                    templateErrorAlert.style.display = 'block';
+                    showError('batch', error.message);
                 } finally {
                     loading.style.display = 'none';
                 }
@@ -331,7 +773,7 @@
             // Process batch
             predictBatchBtn.addEventListener('click', async function() {
                 if (!csvFileInput.files[0]) {
-                    alert('Please select a CSV file to upload.');
+                    showError('batch', 'Please select a CSV file to upload.');
                     return;
                 }
                 
@@ -370,27 +812,39 @@
                     
                     // Show result
                     batchResult.style.display = 'block';
+                    
+                    // Scroll to result
+                    batchResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } catch (error) {
                     console.error('Error processing batch:', error);
-                    
-                    // Create or update error alert
-                    let batchErrorAlert = document.getElementById('batchErrorAlert');
-                    if (!batchErrorAlert) {
-                        batchErrorAlert = document.createElement('div');
-                        batchErrorAlert.id = 'batchErrorAlert';
-                        batchErrorAlert.className = 'alert alert-danger mt-3';
-                        document.getElementById('batch').appendChild(batchErrorAlert);
-                    }
-                    
-                    batchErrorAlert.innerHTML = `
-                        <h4>Error</h4>
-                        <p>${error.message}</p>
-                    `;
-                    batchErrorAlert.style.display = 'block';
+                    showError('batch', error.message);
                 } finally {
                     loading.style.display = 'none';
                 }
             });
+            
+            // Show error message
+            function showError(tabId, message) {
+                // Create or update error alert
+                let errorAlertId = tabId + 'ErrorAlert';
+                let errorAlert = document.getElementById(errorAlertId);
+                
+                if (!errorAlert) {
+                    errorAlert = document.createElement('div');
+                    errorAlert.id = errorAlertId;
+                    errorAlert.className = 'alert alert-danger mt-3';
+                    document.getElementById(tabId).appendChild(errorAlert);
+                }
+                
+                errorAlert.innerHTML = `
+                    <h4><i class="fas fa-exclamation-circle me-2"></i>Error</h4>
+                    <p>${message}</p>
+                `;
+                errorAlert.style.display = 'block';
+                
+                // Scroll to error
+                errorAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
             
             // Load variables for the initial mode
             loadVariables(currentMode);
