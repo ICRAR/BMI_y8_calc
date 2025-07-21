@@ -1,0 +1,43 @@
+name,description,values
+occupcode_m_0,Occupation of mother,"1 - Legislators, senior officials, managers
+2 - Professionals
+3 - Technicians and associate professionals
+4 - Clerks
+5 - Service workers, and shop and market sales workers
+6 - Skilled agricultural, and fishery workers
+7 - Craft and related trades workers
+8 - Plant and machine operators, and assemblers
+9 - Elementary occupations
+0 - Armed forces occupations"
+agebirth_m_y,The mother's age in years,
+preg_gain,Pregnancy weight gain (kg),
+height_m,Height of the mother (cm),
+mode_delivery,Mode of delivery,"1 - Vaginal (normal)
+2 - Forceps, vacuum 
+3 - Elective caesarean
+4 - Emergency caesarean 
+5 - Caesarean unspecified"
+height_f1,Height of the father (cm),
+ga_us,Gestational age determined by ultrasound in days,
+hhincome_0,Household weekly income (according 2021 Australian Bureau of Statistics),"1 - $2,950 and over
+2 - $1,741 to $2,949
+3 - $868 to $1,740
+4 - $0 to $867"
+solid_food,"Age of the child when solid food was introduced, in month",
+prepreg_cig,"Cigarettes per day before pregnancy, at any time pre-partum ",
+ga_wt2,Gestational age at time WT2 was recorded (weeks),
+y1_a10,Year 1 Abdominal skinfold (cm),
+y5_a5,Year 5 Chest circumference (cm),
+y5_a6,Year 5 Mid arm circumference (cm),
+y5_a7,Year 5 Triceps skinfold (cm),
+y5_a8,Year 5 Subscapular skinfold (cm),
+y5_a9,Year 5 Suprailiac skinfold (cm),
+y5_a10,Year 5 Abdominal skinfold (cm),
+y5_a2,Year 5 height (cm),
+y5_a1,Year 5 weight (kg),
+y1_a2,Year 1 height (cm),
+y1_a1,Year 1 weight (kg),
+sex,Sex assigned at birth,"1 - Male 2 - Female
+"
+y1_agemos,The age when the year 1 anthropometric measurements were taken (month),
+y5_agemos,The age when the year 5 anthropometric measurements were taken (month),
