@@ -325,7 +325,7 @@ if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Run the BMI Year 8 Prediction Tool server")
     parser.add_argument("--port", type=int, help="Port to run the server on (default: 8080 or PORT env var)")
-    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to (default: 0.0.0.0)")
+    parser.add_argument("--host", type=str, default="localhost", help="Host to bind the server to (default: 0.0.0.0)")
     parser.add_argument("--auto-port", action="store_true", help="Automatically find an available port if the specified port is in use")
     args = parser.parse_args()
     
