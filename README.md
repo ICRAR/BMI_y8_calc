@@ -6,14 +6,14 @@ A web application for predicting Year 8 BMI using different prediction models.
 
 This application provides a web interface for predicting Year 8 BMI using two different prediction models:
 
-- **Good Mode**: Uses 10 variables for prediction
-- **Better Mode**: Uses 20 variables for more accurate prediction
+- **Simple Mode**: Uses 10 variables for prediction
+- **Comprehensive Mode**: Uses 20 variables for more accurate prediction
 
 Users can make predictions for a single sample by filling out a form or process multiple samples by uploading a CSV file.
 
 ## Features
 
-- Choose between "Good" and "Better" prediction modes
+- Choose between "Simple" and "Comprehensive" prediction modes
 - Single sample prediction with form validation
 - Batch processing with CSV file upload/download
 - Automatic calculation of derived variables (y5_bmiz and y1_bmifa)
@@ -101,7 +101,7 @@ If port 8000 is already in use, you can:
 
 ### Using the Web Interface
 
-1. Select a prediction mode ("Good" or "Better")
+1. Select a prediction mode ("Simple" or "Comprehensive")
 2. Choose between single sample prediction or batch processing
 
 #### Single Sample Prediction
@@ -145,9 +145,9 @@ Or if you're running with Python directly (default port 8080):
 
 ## Variables
 
-### Good Mode Variables
+### Simple Mode Variables
 
-The "Good" mode uses the following 10 variables:
+The "Simple" mode uses the following 10 variables:
 
 - occupcode_m_0: Occupation of mother
 - hhincome_0: Household weekly income
@@ -160,9 +160,9 @@ The "Good" mode uses the following 10 variables:
 - y5_bmiz: Year 5 BMI z-score (calculated)
 - preg_gain: Pregnancy weight gain (kg)
 
-### Better Mode Variables
+### Comprehensive Mode Variables
 
-The "Better" mode uses the following 20 variables:
+The "Comprehensive" mode uses the following 20 variables:
 
 - occupcode_m_0: Occupation of mother
 - agebirth_m_y: The mother's age in years
@@ -194,10 +194,20 @@ The application automatically calculates the following derived variables:
 
 ## License
 
-[Specify the license here]
+Copyright (c) 2025. UWA (in the framework of the ICRAR)
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 
 
 ## Acknowledgements
+We gratefully acknowledge all Raine Study participants and their families for their continued participation in the study, as well as the Raine Study team for study co-ordination and data collection. We also thank the NHMRC and the Raine Medical Research Foundation for their support. The core management of the Raine Study is funded by The University of Western Australia, Curtin University, The Kids Research Institute Australia, Women and Infants Research Foundation, Edith Cowan University, Murdoch University, The University of Notre Dame Australia and the Western Australian Future Health Research and Innovation Fund (2023-2024; Grant ID WACSOSP2023-2024). The Pawsey Supercomputing Centre provided computation resources to carry out analyses required with funding from the Australian Government and the Government of Western Australia. The data collection of the Raine Study Gen1- and Gen2-1, 2, 5, 8 year follow-ups was funded by NHMRC Grant and The Raine Medical Research Foundation.
 
 This project uses the following open-source libraries:
 

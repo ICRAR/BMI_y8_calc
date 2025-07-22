@@ -1,9 +1,36 @@
+<!--
+  ~ #  Copyright (c) 2025. UWA (in the framework of the ICRAR)
+  ~ #
+  ~ #  Redistribution and use in source and binary forms, with or without modification, are permitted
+  ~ #  provided that the following conditions are met:
+  ~ #
+  ~ #  1. Redistributions of source code must retain the above copyright notice, this list of conditions and
+  ~ #  the following disclaimer.
+  ~ #
+  ~ #  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+  ~ #  and the following disclaimer in the documentation and/or other materials provided with the distribution.
+  ~ #
+  ~ #  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or
+  ~ #  promote products derived from this software without specific prior written permission.
+  ~ #
+  ~ #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+  ~ #  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  ~ #  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  ~ #  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  ~ #  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  ~ #  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  ~ #  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  ~ #  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  ~ #  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  ~ #  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 8 BMI Prediction Tool</title>
+    <title>Year 8 BMI Prediction Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -340,7 +367,7 @@
 <body>
     <div class="container">
         <header class="app-header text-center">
-            <h1 class="app-title">Year 8 BMI Prediction Tool</h1>
+            <h1 class="app-title">Year 8 BMI Prediction Calculator</h1>
             <p class="app-subtitle mb-0">Predict BMI using explainable AI</p>
         </header>
         
@@ -353,26 +380,26 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3 mb-md-0">
-                                <div class="card mode-card selected" id="goodModeCard">
+                                <div class="card mode-card selected" id="simpleModeCard">
                                     <div class="card-body text-center">
                                         <div class="mode-icon">
                                             <i class="fas fa-chart-line"></i>
                                         </div>
-                                        <h3 class="mode-title">Good Mode</h3>
+                                        <h3 class="mode-title">Simple Mode</h3>
                                         <p class="mode-description">Uses 10 variables for prediction</p>
-                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeGood" value="good" checked>
+                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeSimple" value="simple" checked>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="card mode-card" id="betterModeCard">
+                                <div class="card mode-card" id="comprehensiveModeCard">
                                     <div class="card-body text-center">
                                         <div class="mode-icon">
                                             <i class="fas fa-chart-bar"></i>
                                         </div>
-                                        <h3 class="mode-title">Better Mode</h3>
+                                        <h3 class="mode-title">Comprehensive Mode</h3>
                                         <p class="mode-description">Uses 20 variables for more accurate prediction</p>
-                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeBetter" value="better">
+                                        <input class="form-check-input visually-hidden" type="radio" name="mode" id="modeComprehensive" value="comprehensive">
                                     </div>
                                 </div>
                             </div>
@@ -474,7 +501,7 @@
         </div>
         
         <footer>
-            <p>Year 8 BMI Prediction Tool &copy; 2025</p>
+            <p>Year 8 BMI Prediction Calculator &copy; 2025 University of Western Australia (in the framework of the ICRAR)</p>
         </footer>
     </div>
 
@@ -482,8 +509,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Elements
-            const goodModeCard = document.getElementById('goodModeCard');
-            const betterModeCard = document.getElementById('betterModeCard');
+            const simpleModeCard = document.getElementById('simpleModeCard');
+            const comprehensiveModeCard = document.getElementById('comprehensiveModeCard');
             const modeRadios = document.querySelectorAll('input[name="mode"]');
             const variablesContainer = document.getElementById('variablesContainer');
             const predictSingleBtn = document.getElementById('predictSingleBtn');
@@ -499,26 +526,26 @@
             const loading = document.getElementById('loading');
             
             // Current mode
-            let currentMode = 'good';
+            let currentMode = 'simple';
             
             // Mode card selection
-            goodModeCard.addEventListener('click', function() {
-                document.getElementById('modeGood').checked = true;
-                goodModeCard.classList.add('selected');
-                betterModeCard.classList.remove('selected');
-                currentMode = 'good';
+            simpleModeCard.addEventListener('click', function() {
+                document.getElementById('modeSimple').checked = true;
+                simpleModeCard.classList.add('selected');
+                comprehensiveModeCard.classList.remove('selected');
+                currentMode = 'simple';
                 loadVariables(currentMode);
                 
                 // Hide results
                 singleResult.style.display = 'none';
                 batchResult.style.display = 'none';
             });
-            
-            betterModeCard.addEventListener('click', function() {
-                document.getElementById('modeBetter').checked = true;
-                betterModeCard.classList.add('selected');
-                goodModeCard.classList.remove('selected');
-                currentMode = 'better';
+
+            comprehensiveModeCard.addEventListener('click', function() {
+                document.getElementById('modeComprehensive').checked = true;
+                comprehensiveModeCard.classList.add('selected');
+                simpleModeCard.classList.remove('selected');
+                currentMode = 'comprehensive';
                 loadVariables(currentMode);
                 
                 // Hide results
@@ -569,6 +596,16 @@
                     // Add Year 1 variables
                     if (y1Vars.length > 0) {
                         html += '<h3 class="form-section-title">Year 1 Measurements</h3>';
+                        // Add skinfold measurement guide info
+                        html += `
+                            <div class="alert alert-info mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Need help with skinfold measurements?</strong> 
+                                <a href="https://www.measurement-toolkit.org/anthropometry/objective-methods/simple-measures-skinfolds" target="_blank" class="alert-link">
+                                    Click here for a guide on how to measure skinfolds correctly
+                                </a>
+                            </div>
+                        `;
                         y1Vars.forEach(variable => {
                             html += createFormField(variable);
                         });
@@ -577,6 +614,16 @@
                     // Add Year 5 variables
                     if (y5Vars.length > 0) {
                         html += '<h3 class="form-section-title">Year 5 Measurements</h3>';
+                        // Add skinfold measurement guide info
+                        html += `
+                            <div class="alert alert-info mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Need help with skinfold measurements?</strong> 
+                                <a href="https://www.measurement-toolkit.org/anthropometry/objective-methods/simple-measures-skinfolds" target="_blank" class="alert-link">
+                                    Click here for a guide on how to measure skinfolds correctly
+                                </a>
+                            </div>
+                        `;
                         y5Vars.forEach(variable => {
                             html += createFormField(variable);
                         });

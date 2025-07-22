@@ -1,9 +1,34 @@
+#   Copyright (c) 2025. UWA (in the framework of the ICRAR)
+#  #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted
+#   provided that the following conditions are met:
+#  #
+#   1. Redistributions of source code must retain the above copyright notice, this list of conditions and
+#   the following disclaimer.
+#  #
+#   2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+#   and the following disclaimer in the documentation and/or other materials provided with the distribution.
+#  #
+#   3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or
+#   promote products derived from this software without specific prior written permission.
+#  #
+#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+#   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+#   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+#   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+#   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+#   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+#   SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+#   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+#   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 import pandas as pd
 from bmizscore.zscore import get_bmiz_singlevalue as get_y5_bmiz
 from pygrowup import Observation as get_y1_bmifa
 year = 8
 params = {
-    "good": {
+    "simple": {
         'n_var': 10,
         'width': [10,10,1],
         'grid': 5,
@@ -24,7 +49,7 @@ params = {
                       'preg_gain'
                       ]
     },
-    "better":{
+    "comprehensive":{
         'n_var': 20,
         'width': [20,10,1],
         'grid': 5,
@@ -56,7 +81,7 @@ params = {
     }
 }
 
-mode = 'good'
+mode = 'simple'
 # train the model first
 
 def add_y1y5_bmiz(data, mode):
@@ -86,7 +111,7 @@ def add_y1y5_bmiz(data, mode):
         
         data['y5_bmiz'] = y5_bmiz
 
-        if mode == 'better':
+        if mode == 'comprehensive' or mode == 'simple':
             # Check for required columns for y1_bmifa calculation
             required_y1_cols = ['y1_agemos', 'y1_a2', 'y1_a1', 'sex']
             missing_y1_cols = [col for col in required_y1_cols if col not in data.columns]
@@ -135,7 +160,7 @@ def calculate_y8_bmi(data, mode):
 
     Parameters:
     data (pandas.DataFrame): The input data containing the required variables
-    mode (str): The mode to use ('good' or 'better')
+    mode (str): The mode to use ('simple' or 'comprehensive')
 
     Returns:
     pandas.DataFrame: The input data with y8_bmi column added
@@ -145,8 +170,8 @@ def calculate_y8_bmi(data, mode):
     """
     try:
         # Check if mode is valid
-        if mode not in ['good', 'better']:
-            raise ValueError(f"Invalid mode: {mode}. Must be 'good' or 'better'.")
+        if mode not in ['simple', 'comprehensive']:
+            raise ValueError(f"Invalid mode: {mode}. Must be 'simple' or 'comprehensive'.")
         
         # Read the formula from the appropriate file
         formula_path = f'./calculator/formula_{mode}.txt'

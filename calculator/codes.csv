@@ -19,7 +19,7 @@ mode_delivery,Mode of delivery,"1 - Vaginal (normal)
 5 - Caesarean unspecified"
 height_f1,Height of the father (cm),
 ga_us,Gestational age determined by ultrasound in days,
-hhincome_0,Household weekly income (according 2021 Australian Bureau of Statistics),"1 - $2,950 and over
+hhincome_0,Household weekly income (according to 2021 Australian Bureau of Statistics),"1 - $2,950 and over
 2 - $1,741 to $2,949
 3 - $868 to $1,740
 4 - $0 to $867"
