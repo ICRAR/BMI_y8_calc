@@ -156,7 +156,31 @@ def create_template_csv(mode):
     required_vars = get_required_variables(mode)
     output = io.StringIO()
     writer = csv.writer(output)
+    
+    # Write variable names as headers
     writer.writerow(required_vars)
+    
+    # Write descriptions in the second row
+    descriptions = [variable_descriptions.get(var, "") for var in required_vars]
+    writer.writerow(descriptions)
+    
+    # Prepare valid values information
+    # Find the maximum number of values for any variable
+    max_values_count = 0
+    for var in required_vars:
+        if var in variable_values:
+            max_values_count = max(max_values_count, len(variable_values[var]))
+    
+    # Write valid values rows
+    for i in range(max_values_count):
+        row = []
+        for var in required_vars:
+            if var in variable_values and i < len(variable_values[var]):
+                row.append(variable_values[var][i])
+            else:
+                row.append("")
+        writer.writerow(row)
+    
     return output.getvalue()
 
 # Process a single sample

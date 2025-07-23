@@ -457,6 +457,12 @@
                                     <button type="button" id="downloadTemplateBtn" class="btn btn-outline-primary">
                                         <i class="fas fa-download me-2"></i>Download Template CSV
                                     </button>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Important:</strong> The template includes variable descriptions and valid values for your reference. 
+                                        When uploading your data, please <strong>only keep the first header row and your data rows</strong>. 
+                                        Remove the description row and any valid values rows before uploading.
+                                    </div>
                                 </div>
                                 
                                 <div class="file-upload-container" id="dropZone">
@@ -464,6 +470,7 @@
                                         <i class="fas fa-file-csv"></i>
                                     </div>
                                     <p class="file-upload-text">Drag and drop your CSV file here or click to browse</p>
+                                    <p class="text-danger"><strong>Remember:</strong> Your CSV should only contain the first header row and your data rows.</p>
                                     <div class="file-upload-btn">
                                         <label for="csvFile" class="btn btn-outline-primary">
                                             <i class="fas fa-folder-open me-2"></i>Browse Files

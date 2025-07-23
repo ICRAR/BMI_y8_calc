@@ -2,6 +2,25 @@
 
 A web application for predicting Year 8 BMI using different prediction models.
 
+## Usage Options
+
+You have two options to use this application:
+
+### 1. Online Application
+
+Access our online application at: **[https://bmi-y8-calc.onrender.com/](https://bmi-y8-calc.onrender.com/)**
+
+**Note:** The website may delay requests by 50 seconds or more as it is hosted on a free plan. The application will become active after this initial delay.
+
+### 2. Local Deployment
+
+You can download this repository and run the application on your own computer. This option provides:
+- No waiting time for predictions
+- Complete privacy of your data
+- Ability to modify the application if needed
+
+Follow the installation and usage instructions below to set up and run the application locally.
+
 ## Overview
 
 This application provides a web interface for predicting Year 8 BMI using two different prediction models:
@@ -22,37 +41,28 @@ Users can make predictions for a single sample by filling out a form or process 
 
 ## Installation
 
+The following instructions will guide you through setting up the application on your local machine. This is only necessary if you choose the local deployment option.
+
 ### Prerequisites
 
 - Python 3.7+
-- pip
-
-### Dependencies
-
-The application requires the following Python packages:
-
-- fastapi
-- uvicorn
-- pandas
-- jinja2
-- python-multipart
-- pygrowup (from GitHub)
+- pip (Python package installer)
 
 ### Installation Steps
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone https://github.com/ICRAR/BMI_y8_calc
    cd BMI_y8_calc
    ```
 
-2. Install the required packages:
+2. Install the required packages in a local environment:
    ```
-   pip install fastapi uvicorn pandas jinja2 python-multipart
-   pip install git+https://github.com/jbaldivieso/pygrowup2.git
+   python -m venv venv
+   source venv/bin/activate  # macOS/Linux
+   venv\Scripts\activate     # Windows
+   pip install -r requirements.txt
    ```
-
-   Note: Do not install pygrowup directly from PyPI. Use the GitHub repository as specified.
 
 3. Create the necessary directories:
    ```
@@ -61,43 +71,18 @@ The application requires the following Python packages:
 
 ## Usage
 
+Once you have installed the application and its dependencies, you can run it locally on your machine. The following instructions will guide you through starting and using the application.
+
 ### Starting the Application
 
 Run the following command from the project root directory:
 
 ```
-uvicorn main:app --reload
+uvicorn main:app --host=0.0.0.0 --port=${PORT:-8000}
 ```
 
 The application will be available at http://0.0.0.0:8000 by default.
 
-#### Configuring the Port
-
-If port 8000 is already in use, you can:
-
-1. Run the application directly using Python, which will use port 8080 by default:
-   ```
-   python main.py
-   ```
-
-2. Set a custom port using the PORT environment variable:
-   ```
-   # On Linux/macOS
-   PORT=8888 python main.py
-   
-   # On Windows (Command Prompt)
-   set PORT=8888
-   python main.py
-   
-   # On Windows (PowerShell)
-   $env:PORT=8888
-   python main.py
-   ```
-
-3. Specify a port directly with uvicorn:
-   ```
-   uvicorn main:app --reload --port 8888
-   ```
 
 ### Using the Web Interface
 
@@ -117,87 +102,6 @@ If port 8000 is already in use, you can:
 3. Upload the completed CSV file
 4. Click the "Process Batch" button
 5. Download the results CSV file, which includes the predicted Year 8 BMI values
-
-## Deployment to Render
-
-This application can be easily deployed to [Render](https://render.com/), a cloud platform that offers free hosting for web services.
-
-### Prerequisites for Render Deployment
-
-- A GitHub account with this repository pushed to it
-- A Render account (you can sign up for free at [render.com](https://render.com/))
-
-### Configuration Files
-
-The repository includes two important files for Render deployment:
-
-1. **Procfile**: Tells Render how to start the application
-2. **render.yaml**: Defines the service configuration for Render's Blueprint feature
-
-### Deployment Steps
-
-1. **Push your code to GitHub**:
-   Make sure your code, including the Procfile and render.yaml, is pushed to a GitHub repository.
-
-2. **Connect to Render**:
-   - Log in to your Render account
-   - Click "New" and select "Blueprint" from the dropdown menu
-   - Connect your GitHub account if you haven't already
-   - Select the repository containing this application
-
-3. **Deploy the Blueprint**:
-   - Render will automatically detect the render.yaml file
-   - Review the settings and click "Apply"
-   - Render will create and deploy the service as defined in the render.yaml file
-
-4. **Manual Deployment (Alternative)**:
-   If you prefer not to use Blueprints:
-   - Click "New" and select "Web Service"
-   - Connect your GitHub repository
-   - Select "Python" as the environment
-   - Set the build command to: `pip install -r requirements.txt`
-   - Set the start command to: `uvicorn main:app --host=0.0.0.0 --port=$PORT`
-   - Click "Create Web Service"
-
-5. **Access Your Application**:
-   - Once deployment is complete, Render will provide a URL for your application
-   - The application will be available at this URL
-   - You can also set up a custom domain in the Render dashboard
-
-### Environment Variables
-
-No additional environment variables are required for basic functionality. Render automatically provides the `PORT` environment variable, which the application uses.
-
-### Troubleshooting
-
-- **Build Failures**: Check the build logs in the Render dashboard. Common issues include missing dependencies or Python version incompatibilities.
-- **Runtime Errors**: Check the logs in the Render dashboard for any runtime errors.
-- **Slow First Request**: Render may put free services to sleep after periods of inactivity. The first request after inactivity may be slow as the service wakes up.
-
-## API Endpoints
-
-The application provides the following API endpoints:
-
-- `GET /`: Main web interface
-- `GET /api/variables/{mode}`: Get the variables required for a specific mode
-- `GET /api/template/{mode}`: Download a template CSV file for a specific mode
-- `POST /api/predict/single`: Predict BMI for a single sample
-- `POST /api/predict/batch`: Process a batch of samples from a CSV file
-
-### API Documentation
-
-FastAPI automatically generates interactive API documentation. You can access it at:
-
-- Swagger UI: http://localhost:{port}/docs (replace {port} with the port you're using)
-- ReDoc: http://localhost:{port}/redoc (replace {port} with the port you're using)
-
-For example, if you're running on the default port with uvicorn:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-Or if you're running with Python directly (default port 8080):
-- Swagger UI: http://localhost:8080/docs
-- ReDoc: http://localhost:8080/redoc
 
 ## Variables
 
