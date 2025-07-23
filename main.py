@@ -315,54 +315,54 @@ async def predict_batch(mode: str = Form(...), file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=f"Error processing data: {str(e)}")
 
 # Run the application
-if __name__ == "__main__":
-    import uvicorn
-    import os
-    import socket
-    import argparse
-    import sys
-    
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Run the BMI Year 8 Prediction Tool server")
-    parser.add_argument("--port", type=int, help="Port to run the server on (default: 8080 or PORT env var)")
-    parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to (default: 0.0.0.0)")
-    parser.add_argument("--auto-port", action="store_true", help="Automatically find an available port if the specified port is in use")
-    args = parser.parse_args()
-    
-    # Get port from command line args, environment variable, or use default (8080)
-    port = args.port if args.port is not None else int(os.environ.get("PORT", 8080))
-    host = args.host
-    
-    # Function to check if a port is available
-    def is_port_available(host, port):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.bind((host, port))
-                return True
-            except socket.error:
-                return False
-    
-    # Try to find an available port if auto-port is enabled
-    if args.auto_port and not is_port_available(host, port):
-        print(f"Port {port} is already in use. Searching for an available port...")
-        for test_port in range(port + 1, port + 100):
-            if is_port_available(host, test_port):
-                print(f"Found available port: {test_port}")
-                port = test_port
-                break
-        else:
-            print(f"Error: Could not find an available port in range {port+1}-{port+100}")
-            sys.exit(1)
-    
-    try:
-        # Run the server with the configured port
-        print(f"Starting server on {host}:{port}")
-        uvicorn.run(app, host=host, port=port)
-    except OSError as e:
-        if "address already in use" in str(e).lower():
-            print(f"Error: Port {port} is already in use. Try using a different port with --port or enable --auto-port to automatically find an available port.")
-            print(f"Example: python main.py --port 8081")
-            print(f"Example: python main.py --auto-port")
-        else:
-            print(f"Error starting server: {e}")
+
+import uvicorn
+import os
+import socket
+import argparse
+import sys
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description="Run the BMI Year 8 Prediction Tool server")
+parser.add_argument("--port", type=int, help="Port to run the server on (default: 8080 or PORT env var)")
+parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to (default: 0.0.0.0)")
+parser.add_argument("--auto-port", action="store_true", help="Automatically find an available port if the specified port is in use")
+args = parser.parse_args()
+
+# Get port from command line args, environment variable, or use default (8080)
+port = args.port if args.port is not None else int(os.environ.get("PORT", 8080))
+host = args.host
+
+# Function to check if a port is available
+def is_port_available(host, port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return True
+        except socket.error:
+            return False
+
+# Try to find an available port if auto-port is enabled
+if args.auto_port and not is_port_available(host, port):
+    print(f"Port {port} is already in use. Searching for an available port...")
+    for test_port in range(port + 1, port + 100):
+        if is_port_available(host, test_port):
+            print(f"Found available port: {test_port}")
+            port = test_port
+            break
+    else:
+        print(f"Error: Could not find an available port in range {port+1}-{port+100}")
         sys.exit(1)
+
+try:
+    # Run the server with the configured port
+    print(f"Starting server on {host}:{port}")
+    uvicorn.run(app, host=host, port=port)
+except OSError as e:
+    if "address already in use" in str(e).lower():
+        print(f"Error: Port {port} is already in use. Try using a different port with --port or enable --auto-port to automatically find an available port.")
+        print(f"Example: python main.py --port 8081")
+        print(f"Example: python main.py --auto-port")
+    else:
+        print(f"Error starting server: {e}")
+    sys.exit(1)
